@@ -15,11 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.goaltracker.GoalService;
 import com.example.goaltracker.model.Goal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/goals")
 @CrossOrigin(origins = "*")
 public class GoalController {
-	private final GoalService goalService;
+
+    private final GoalService goalService;
+    private static final Logger logger = LoggerFactory.getLogger(GoalController.class);
 
     public GoalController(GoalService goalService) {
         this.goalService = goalService;
@@ -32,7 +37,12 @@ public class GoalController {
 
     @PostMapping
     public Goal addGoal(@RequestBody Goal goal) {
-        return goalService.addGoal(goal);
+        try {
+            return goalService.addGoal(goal);
+        } catch (Exception e) {
+            logger.error("Error adding goal: " + e.getMessage());
+            throw e; // Propagate the error after logging it
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -44,9 +54,4 @@ public class GoalController {
     public Optional<Goal> updateGoal(@PathVariable Long id, @RequestBody Goal goal) {
         return goalService.updateGoal(id, goal);
     }
-
-
-
-
-
 }
