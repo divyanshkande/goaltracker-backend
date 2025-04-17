@@ -54,22 +54,10 @@ public class GoalService {
         }
     }
 
-    // Update an existing goal
-    public Optional<Goal> updateGoal(Long id, Goal goal) {
-        try {
-            Optional<Goal> existingGoal = goalRepository.findById(id);
-            if (existingGoal.isPresent()) {
-                Goal updatedGoal = existingGoal.get();
-                updatedGoal.setTitle(goal.getTitle());
-                updatedGoal.setDescription(goal.getDescription());
-                updatedGoal.setCompleted(goal.isCompleted());
-                return Optional.of(goalRepository.save(updatedGoal));
-            } else {
-                throw new RuntimeException("Goal with ID " + id + " not found.");
-            }
-        } catch (Exception e) {
-            // Handle unexpected errors
-            throw new RuntimeException("Error updating goal: " + e.getMessage());
-        }
+ // Add this inside GoalService.java
+
+    public Optional<Goal> getGoalById(Long id) {
+        return goalRepository.findById(id);
     }
+
 }

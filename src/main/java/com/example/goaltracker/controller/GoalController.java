@@ -3,6 +3,7 @@ package com.example.goaltracker.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +51,13 @@ public class GoalController {
         goalService.deleteGoal(id);
     }
 
-    @PutMapping("/{id}")
-    public Optional<Goal> updateGoal(@PathVariable Long id, @RequestBody Goal goal) {
-        return goalService.updateGoal(id, goal);
+ // Add this inside GoalController.java
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Goal> getGoalById(@PathVariable Long id) {
+        Optional<Goal> goal = goalService.getGoalById(id);
+        return goal.map(ResponseEntity::ok)
+                   .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 }
