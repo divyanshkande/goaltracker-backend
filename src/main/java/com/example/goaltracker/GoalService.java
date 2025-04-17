@@ -59,5 +59,16 @@ public class GoalService {
     public Optional<Goal> getGoalById(Long id) {
         return goalRepository.findById(id);
     }
+    
+
+    public Optional<Goal> updateGoal(Long id, Goal updatedGoal) {
+        return goalRepository.findById(id).map(existingGoal -> {
+            existingGoal.setTitle(updatedGoal.getTitle());
+            existingGoal.setDescription(updatedGoal.getDescription());
+            return goalRepository.save(existingGoal);
+        });
+    }
+
+
 
 }

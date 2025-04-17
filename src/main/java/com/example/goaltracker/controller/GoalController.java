@@ -59,5 +59,12 @@ public class GoalController {
         return goal.map(ResponseEntity::ok)
                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Goal> updateGoal(@PathVariable Long id, @RequestBody Goal updatedGoal) {
+        return goalService.updateGoal(id, updatedGoal)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }
