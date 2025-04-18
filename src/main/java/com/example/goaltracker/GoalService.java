@@ -76,6 +76,13 @@ public class GoalService {
             throw e;
         }
     }
-
+     
+    
+    public Optional<Goal> toggleGoalCompletion(Long id) {
+        return goalRepository.findById(id).map(goal -> {
+            goal.setCompleted(!goal.isCompleted());
+            return goalRepository.save(goal);
+        });
+    }
 
 }
