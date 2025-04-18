@@ -62,13 +62,20 @@ public class GoalService {
     
 
     public Optional<Goal> updateGoal(Long id, Goal updatedGoal) {
-        return goalRepository.findById(id).map(existingGoal -> {
-            existingGoal.setTitle(updatedGoal.getTitle());
-            existingGoal.setDescription(updatedGoal.getDescription());
-            return goalRepository.save(existingGoal);
-        });
-    }
+        try {
+            Goal existing = goalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Goal not found with id " + id));
 
+            existing.setTitle(updatedGoal.getTitle());
+            existing.setDescription(updatedGoal.getDescription());
+            existing.setCompleted(updatedGoal.isCompleted());
+
+            return Optional.of(goalRepository.save(existing));
+        } catch (Exception e) {
+            System.err.println("Update error: " + e.getMessage());
+            throw e;
+        }
+    }
 
 
 }
