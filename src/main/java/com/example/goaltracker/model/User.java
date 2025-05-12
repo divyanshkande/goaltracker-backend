@@ -1,7 +1,14 @@
 package com.example.goaltracker.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+
+
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -16,7 +23,9 @@ public class User {
     private String password;
 
     // One user can have many goals
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    
     private List<Goal> goals = new ArrayList<>();
 
     public User() {}
@@ -62,4 +71,28 @@ public class User {
         goals.remove(goal);
         goal.setUser(null);
     }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // You can return roles or authorities here. For simplicity, assuming one role for now.
+        return List.of(() -> "ROLE_USER");  // Example role, modify as needed
+    }
+    public boolean isAccountNonExpired() {
+        return true;  // Implement logic based on your requirements
+    }
+
+    public boolean isAccountNonLocked() {
+        return true;  // Implement logic based on your requirements
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return true;  // Implement logic based on your requirements
+    }
+
+    
+    public boolean isEnabled() {
+        return true;  // Implement logic based on your requirements
+    }
+
+
+
 }

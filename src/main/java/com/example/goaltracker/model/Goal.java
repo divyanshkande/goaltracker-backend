@@ -1,5 +1,7 @@
 package com.example.goaltracker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class Goal {
 
     @ManyToOne
     @JoinColumn(name = "user_id") // FK in goal table pointing to user table
+    @JsonBackReference
     private User user;
 
     public Goal() {
